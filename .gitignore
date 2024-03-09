@@ -1,0 +1,7 @@
+﻿*.db
+obj
+bin
+appsettings.json
+.idea
+*.png
+*.mp4 
