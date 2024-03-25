@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectP.Dtos.AccountDtos;
 using ProjectP.Errors;
+using ProjectP.Extensions;
 using ProjectP.Interfaces;
 
 namespace ProjectP.Controllers;
@@ -23,6 +24,7 @@ public class AccountsController : BaseApiController
     {
         var result = await _accountService.Login(loginDto);
         if (result.user == null) return Ok(new ApiResponse(400, result.Message));
+      
         return Ok(new ApiOkResponse<AccountDto>(result.user));
     }
 
@@ -51,5 +53,37 @@ public class AccountsController : BaseApiController
         var result = await _accountService.ResetPassword(restDto);
         if (result.Success) return Ok(new ApiResponse(200, result.Message));
         else return Ok(new ApiResponse(400, result.Message));
+    }
+
+    [HttpGet("confirmEmail")]
+    [AllowAnonymous]
+    public async Task<ActionResult> ConfirmEmail(string? userId, string? token)
+    {
+        var res = await _accountService.ConfirmEmail(userId, token);
+        if (!res.Success) return BadRequest(new ApiResponse(400, messageEN: "confirmation failed"));
+
+        return Ok("Your Email is Confirmed try to login in now");
+    }
+
+    [Authorize]
+    [HttpPut("change-password")]
+    public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordDto dto)
+    {
+        try
+        {
+            var email = User.GetEmail();
+            var res =
+                await _accountService.UpdatePassword(dto, email);
+
+            if (!res.Success)
+                return BadRequest(new ApiResponse(400, messageEN: "Failed to update password"));
+
+            return Ok(new ApiResponse(200, messageEN: "updated successfully"));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

@@ -16,10 +16,13 @@ public class RegisterDto
 
     public Gender Gender { get; set; }
 
-    [Required(ErrorMessage = "Full name required")]
-    public string FullName { get; set; }
+    [Required(ErrorMessage = "First name required")]
+    public string FirstName { get; set; }
     
-    [Required(ErrorMessage = "birthday required")]
-    public DateTime Birthday { get; set; }
-    public IFormFile Image { get; set; }
+    [Required(ErrorMessage = "Last name required")]
+    public string LastName { get; set; }
+    
+    [Required(ErrorMessage = "Phone number required")]
+    public string PhoneNumber { get; set; }
+    public IFormFile? Image { get; set; }
 }

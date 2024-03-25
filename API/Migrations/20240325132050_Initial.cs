@@ -32,9 +32,14 @@ namespace ProjectP.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    PictureUrl = table.Column<string>(type: "TEXT", nullable: true),
                     Gender = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Birthday = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -42,7 +47,6 @@ namespace ProjectP.Migrations
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
                     SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),

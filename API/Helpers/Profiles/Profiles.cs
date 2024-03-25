@@ -9,7 +9,6 @@ public class Profiles : Profile
 {
     public Profiles()
     {
-        CreateMap<AppUser,AccountDto>();
-        CreateMap<RegisterDto, AppUser>();
+        
     }
 }

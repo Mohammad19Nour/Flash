@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectP.Data;
 using ProjectP.Data.Repositories;
 using ProjectP.Entities;
+using ProjectP.Errors;
 using ProjectP.Helpers.Profiles;
 using ProjectP.Interfaces;
 using ProjectP.Services;
@@ -44,12 +45,10 @@ public static class ApplicationServiceExtensions
                     }))
                     .ToArray();
 
-                var errorResponse = new
-                {
-                    Errors = errors
-                };
-
-                return new OkObjectResult(errorResponse);
+                var tmp = errors.Select(c => $"{c.Field}: {c.Message}").ToArray();
+                                var re = string.Join(", ", tmp);
+                
+                                return new OkObjectResult(new ApiResponse(400,re));
             };
         });
         return services;

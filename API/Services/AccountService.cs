@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Web;
 using AsparagusN.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -97,14 +98,20 @@ public class AccountService : IAccountService
 
             if (registerDto.Password != registerDto.ConfirmedPassword)
                 return (false, "passwords aren't identical");
-
-            var photoRes = await _mediaService.AddPhotoAsync(registerDto.Image);
-
-            if (!photoRes.Success)
-                return (false, photoRes.Message);
-
+           
             user = new AppUser();
-            user.PictureUrl = photoRes.Url;
+
+            if (registerDto.Image != null)
+            {
+                var photoRes = await _mediaService.AddPhotoAsync(registerDto.Image);
+
+                if (!photoRes.Success)
+                    return (false, photoRes.Message);
+
+            
+                user.PictureUrl = photoRes.Url;
+
+            }
             _mapper.Map(registerDto, user);
             user.UserName = registerDto.Email;
             var res = await _userManager.CreateAsync(user, registerDto.Password);
@@ -174,7 +181,14 @@ public class AccountService : IAccountService
 
         var res = await _userManager.ConfirmEmailAsync(user, token);
 
-        if (!res.Succeeded) return (false, "confirmation failed");
+        string msg = "confirmation failed";
+        foreach (var r in res.Errors)
+        {
+          Console.WriteLine(r.Description);
+          msg = r.Description;
+        }
+
+        if (!res.Succeeded) return (false, msg);
 
         return (true, "Your Email is Confirmed try to login in now");
     }
@@ -244,11 +258,16 @@ public class AccountService : IAccountService
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-        var baseUrl = _config["baseUrl"];
-        var confirmationLink = $"{baseUrl}/api/Accounts/ConfirmEmail?userId={user.Id}&token={token}";
+        var baseUrl = _config["ApiUrl"];
+        var codeHtmlVersion = HttpUtility.UrlEncode(token);
+        var confirmationLink = $"{baseUrl}api/Accounts/ConfirmEmail?userId={user.Id}&token={codeHtmlVersion}";
 
         var text = "<html><body>To confirm your email please<a href=" + confirmationLink +
                    "> click here</a></body></html>";
+       
+        
+        Console.WriteLine("generated token: "+token);
+        Console.WriteLine("encoded token"+codeHtmlVersion);
         return await _emailService.SendEmailAsync(user.Email, "Confirmation Email", text);
     }
 }

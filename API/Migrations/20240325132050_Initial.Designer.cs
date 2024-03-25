@@ -11,7 +11,7 @@ using ProjectP.Entities;
 namespace ProjectP.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240308115058_Initial")]
+    [Migration("20240325132050_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -140,6 +140,9 @@ namespace ProjectP.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -152,7 +155,15 @@ namespace ProjectP.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -174,13 +185,16 @@ namespace ProjectP.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PictureUrl")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
