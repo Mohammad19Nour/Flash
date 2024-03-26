@@ -130,12 +130,27 @@ namespace ProjectP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("ArabicDescription")
                         .IsRequired()
                         .HasMaxLength(400)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ArabicName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EnglishDescription")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EnglishName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
@@ -149,10 +164,8 @@ namespace ProjectP.Migrations
                     b.Property<double>("MinPrice")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("OfferId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Reviews")
                         .HasColumnType("INTEGER");
@@ -162,7 +175,9 @@ namespace ProjectP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId")
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("OfferId")
                         .IsUnique();
 
                     b.ToTable("Hotels");
@@ -323,13 +338,36 @@ namespace ProjectP.Migrations
                     b.ToTable("Location");
                 });
 
+            modelBuilder.Entity("ProjectP.Data.Entities.Offer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("REAL");
+
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("StartAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Offer");
+                });
+
             modelBuilder.Entity("ProjectP.Data.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("HotelId")
+                    b.Property<int>("HotelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PictureUrl")
@@ -401,12 +439,19 @@ namespace ProjectP.Migrations
             modelBuilder.Entity("ProjectP.Data.Entities.Hotel", b =>
                 {
                     b.HasOne("ProjectP.Data.Entities.Location", "Location")
-                        .WithOne()
-                        .HasForeignKey("ProjectP.Data.Entities.Hotel", "LocationId")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ProjectP.Data.Entities.Offer", "Offer")
+                        .WithOne("Hotel")
+                        .HasForeignKey("ProjectP.Data.Entities.Hotel", "OfferId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Location");
+
+                    b.Navigation("Offer");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.Identity.AppUserRole", b =>
@@ -430,10 +475,13 @@ namespace ProjectP.Migrations
 
             modelBuilder.Entity("ProjectP.Data.Entities.Photo", b =>
                 {
-                    b.HasOne("ProjectP.Data.Entities.Hotel", null)
+                    b.HasOne("ProjectP.Data.Entities.Hotel", "Hotel")
                         .WithMany("Photos")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.Hotel", b =>
@@ -449,6 +497,12 @@ namespace ProjectP.Migrations
             modelBuilder.Entity("ProjectP.Data.Entities.Identity.AppUser", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("ProjectP.Data.Entities.Offer", b =>
+                {
+                    b.Navigation("Hotel")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

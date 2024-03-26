@@ -90,6 +90,22 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Offer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    HotelId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StartAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Discount = table.Column<double>(type: "REAL", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Offer", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sliders",
                 columns: table => new
                 {
@@ -215,14 +231,17 @@ namespace ProjectP.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    ArabicName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    EnglishName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Stars = table.Column<int>(type: "INTEGER", nullable: false),
                     Reviews = table.Column<int>(type: "INTEGER", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
+                    ArabicDescription = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
+                    EnglishDescription = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
                     MinPrice = table.Column<double>(type: "REAL", nullable: false),
                     MaxPrice = table.Column<double>(type: "REAL", nullable: false),
-                    LocationId = table.Column<int>(type: "INTEGER", nullable: false)
+                    LocationId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OfferId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,6 +252,12 @@ namespace ProjectP.Migrations
                         principalTable: "Location",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Hotels_Offer_OfferId",
+                        column: x => x.OfferId,
+                        principalTable: "Offer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,7 +267,7 @@ namespace ProjectP.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    HotelId = table.Column<int>(type: "INTEGER", nullable: true)
+                    HotelId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -295,7 +320,12 @@ namespace ProjectP.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Hotels_LocationId",
                 table: "Hotels",
-                column: "LocationId",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hotels_OfferId",
+                table: "Hotels",
+                column: "OfferId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -342,6 +372,9 @@ namespace ProjectP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Location");
+
+            migrationBuilder.DropTable(
+                name: "Offer");
         }
     }
 }

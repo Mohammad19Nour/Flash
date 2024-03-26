@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using ProjectP.Data;
+using ProjectP.Data.Entities;
 using ProjectP.Data.Repositories;
 using ProjectP.Errors;
 using ProjectP.Helpers.Profiles;
@@ -22,7 +23,11 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IHotelService, HotelService>();
-        services.AddAutoMapper(typeof(HotelsProfile),typeof(Profiles));
+        services.AddScoped<IOfferService, OfferService>();
+        
+        
+        services.AddAutoMapper(typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));
+        
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         //  services.AddDbContext<DataContext>(opt => { opt.UseSqlServer(config.GetConnectionString("DefaultConnection")); });
 

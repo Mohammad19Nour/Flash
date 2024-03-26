@@ -11,6 +11,7 @@ public class HotelsProfile : Profile
     public HotelsProfile()
     {
         CreateMap<Hotel, HotelDto>();
+        CreateMap<Photo, PhotoDto>();
         CreateMap<UpdateHotelDto, Hotel>().ForAllMembers(x =>
             x.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<NewHotelDto, Hotel>()

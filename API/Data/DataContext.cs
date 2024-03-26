@@ -31,8 +31,26 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
             .WithOne(u => u.Role)
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
+
+        builder.Entity<Hotel>()
+            .HasOne<Offer>(o => o.Offer)
+            .WithOne()
+            .HasForeignKey<Offer>(y => y.HotelId)
+            .IsRequired();
+        builder.Entity<Photo>()
+            .HasOne(p => p.Hotel) // Assuming Hotel is the navigation property in Photo entity
+            .WithMany(h => h.Photos) // Assuming Photos is the navigation property in Hotel entity
+            .HasForeignKey(p => p.HotelId).OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<Offer>()
+            .HasOne<Hotel>(o => o.Hotel)
+            .WithOne(h => h.Offer)
+            .HasForeignKey<Hotel>(y => y.OfferId)
+            
+            .OnDelete(DeleteBehavior.SetNull);
+            
         builder.ApplyConfiguration(new AppUserConfiguration());
-        builder.ApplyConfiguration(new HotelConfiguration());
+   //     builder.ApplyConfiguration(new HotelConfiguration());
+     //   builder.ApplyConfiguration(new OfferConfiguration());
         
         
         var sqlite = Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite";
@@ -40,7 +58,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
             var properties = entityType.ClrType.GetProperties()
-                .Where(p => p.PropertyType == typeof(decimal));
+                .Where(p => p.PropertyType == typeof(decimal) || p.PropertyType == typeof(double));
 
             foreach (var property in properties)
             {

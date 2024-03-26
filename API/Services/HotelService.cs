@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectP.Data.Entities;
 using ProjectP.Dtos.HotelDtos;
+using ProjectP.Dtos.OfferDtos;
 using ProjectP.Interfaces;
 
 namespace ProjectP.Services;
@@ -23,17 +24,20 @@ public class HotelService : IHotelService
     public async Task<Hotel?> GetHotelById(int id)
     {
         var hotel = await _unitOfWork.Repository<Hotel>().GetQueryable()
-            .Include(p=>p.Photos)
-            .Include(l=>l.Location)
-            .FirstOrDefaultAsync(x=>x.Id == id);
+            .Include(p => p.Photos)
+            .Include(l => l.Location)
+            .Include(o => o.Offer)
+            .Include(o => o.Offer)
+            .FirstOrDefaultAsync(x => x.Id == id);
         return hotel;
     }
 
     public async Task<ICollection<Hotel>> GetAllHotels()
     {
         var hotels = await _unitOfWork.Repository<Hotel>().GetQueryable()
-            .Include(p=>p.Photos)
-            .Include(l=>l.Location)
+            .Include(p => p.Photos)
+            .Include(l => l.Location)
+            .Include(o => o.Offer)
             .ToListAsync();
         return hotels;
     }
@@ -65,6 +69,15 @@ public class HotelService : IHotelService
         if (hotel == null)
             return (false, "Hotel not found");
 
+        var offers = await _unitOfWork.Repository<Offer>().GetQueryable()
+            .Where(c => c.HotelId == hotelId)
+            .ToListAsync();
+
+        foreach (var offer in offers)
+        {
+            _unitOfWork.Repository<Offer>().Delete(offer);
+        }
+
         _unitOfWork.Repository<Hotel>().Delete(hotel);
 
         if (!await _unitOfWork.SaveChanges())
@@ -83,6 +96,7 @@ public class HotelService : IHotelService
         var hotel = await _unitOfWork.Repository<Hotel>().GetQueryable()
             .Include(p => p.Photos)
             .Include(l => l.Location)
+            .Include(o => o.Offer)
             .Where(h => h.Id == hotelId)
             .FirstOrDefaultAsync();
 
@@ -94,7 +108,6 @@ public class HotelService : IHotelService
         if (await _unitOfWork.SaveChanges())
             return (hotel, "Done");
         return (null, "Failed to update hotel");
-        
     }
 
     public async Task<(bool Succeed, string Message)> AddPhotos(int hotelId, ICollection<IFormFile> imageFiles)
