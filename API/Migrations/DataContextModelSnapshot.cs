@@ -358,7 +358,7 @@ namespace ProjectP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Offer");
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.Photo", b =>

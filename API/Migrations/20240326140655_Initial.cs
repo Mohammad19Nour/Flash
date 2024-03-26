@@ -90,7 +90,7 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offer",
+                name: "Offers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -102,7 +102,7 @@ namespace ProjectP.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offer", x => x.Id);
+                    table.PrimaryKey("PK_Offers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,9 +253,9 @@ namespace ProjectP.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Hotels_Offer_OfferId",
+                        name: "FK_Hotels_Offers_OfferId",
                         column: x => x.OfferId,
-                        principalTable: "Offer",
+                        principalTable: "Offers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                 });
@@ -374,7 +374,7 @@ namespace ProjectP.Migrations
                 name: "Location");
 
             migrationBuilder.DropTable(
-                name: "Offer");
+                name: "Offers");
         }
     }
 }

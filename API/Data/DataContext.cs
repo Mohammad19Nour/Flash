@@ -22,6 +22,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<Photo> Photos { get; set; }
     public DbSet<Slider> Sliders { get; set; }
     public DbSet<Hotel> Hotels { get; set; }
+    public DbSet<Offer> Offers { get; set; }
     public DbSet<Category> Categories { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {

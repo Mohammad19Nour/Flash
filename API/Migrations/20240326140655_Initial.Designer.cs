@@ -11,7 +11,7 @@ using ProjectP.Data;
 namespace ProjectP.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240326133221_Initial")]
+    [Migration("20240326140655_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -361,7 +361,7 @@ namespace ProjectP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Offer");
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.Photo", b =>
