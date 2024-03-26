@@ -1,5 +1,5 @@
-﻿using ProjectP.Data.Entities.Identity;
-using ProjectP.Entities;
+﻿using ProjectP.Data;
+using ProjectP.Data.Entities.Identity;
 
 namespace ProjectP.Extensions;
 

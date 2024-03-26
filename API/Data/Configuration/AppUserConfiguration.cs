@@ -1,7 +1,7 @@
-﻿using AsparagusN.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProjectP.Data.Entities.Identity;
+using ProjectP.Enums;
 
 namespace ProjectP.Data.Configuration;
 

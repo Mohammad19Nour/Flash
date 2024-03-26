@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using Microsoft.EntityFrameworkCore.Storage;
 using ProjectP.Data.Repositories;
-using ProjectP.Entities;
 using ProjectP.Interfaces;
 
 namespace ProjectP.Data;

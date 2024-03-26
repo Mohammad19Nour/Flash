@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using System.Web;
-using AsparagusN.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
 using ProjectP.Data.Entities.Identity;
 using ProjectP.Dtos.AccountDtos;
-using ProjectP.Entities;
+using ProjectP.Enums;
 using ProjectP.Errors;
 using ProjectP.Extensions;
 using ProjectP.Interfaces;

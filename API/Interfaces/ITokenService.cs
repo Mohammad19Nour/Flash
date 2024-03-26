@@ -1,5 +1,4 @@
 ﻿using ProjectP.Data.Entities.Identity;
-using ProjectP.Entities;
 
 namespace ProjectP.Interfaces;
 

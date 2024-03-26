@@ -1,6 +1,4 @@
-﻿using AsparagusN.Enums;
-
-namespace ProjectP.Dtos.AccountDtos;
+﻿namespace ProjectP.Dtos.AccountDtos;
 
 public class UpdateUserInfoDto
 {

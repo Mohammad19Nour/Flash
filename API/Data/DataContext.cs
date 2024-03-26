@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProjectP.Data.Configuration;
+using ProjectP.Data.Entities;
 using ProjectP.Data.Entities.Identity;
 
-namespace ProjectP.Entities;
+namespace ProjectP.Data;
 
 public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
@@ -17,6 +18,11 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     {
     }
 
+    public DbSet<AppUser> AppUsers;
+    public DbSet<Photo> Photos { get; set; }
+    public DbSet<Slider> Sliders { get; set; }
+    public DbSet<Hotel> Hotels { get; set; }
+    public DbSet<Category> Categories { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -26,6 +32,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
         builder.ApplyConfiguration(new AppUserConfiguration());
+        builder.ApplyConfiguration(new HotelConfiguration());
         
         
         var sqlite = Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite";

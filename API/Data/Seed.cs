@@ -1,10 +1,10 @@
-﻿using AsparagusN.Enums;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
+using ProjectP.Data.Entities;
 using ProjectP.Data.Entities.Identity;
-using ProjectP.Entities;
+using ProjectP.Enums;
 
 namespace ProjectP.Data;
 
@@ -19,7 +19,9 @@ public static class Seed
 
     private static async Task SeedCategories(DataContext context)
     {
-        throw new NotImplementedException();
+        if ( await context.Categories.AnyAsync())return;
+        context.Categories.Add(new Category { ArabicName = "الكل",EnglishName = "All",PictureUrl = "No photo"});
+        await context.SaveChangesAsync();
     }
 
     private static async Task SeedRoles(RoleManager<AppRole> roleManager)

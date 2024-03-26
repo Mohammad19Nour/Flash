@@ -1,7 +1,6 @@
-﻿namespace ProjectP.Helpers;
+﻿using Newtonsoft.Json;
 
-using Newtonsoft.Json;
-
+namespace ProjectP.Helpers.Converters;
 
 public class PictureUrlConverter : JsonConverter
 {

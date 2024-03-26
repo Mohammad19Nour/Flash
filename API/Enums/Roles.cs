@@ -1,6 +1,6 @@
-﻿namespace AsparagusN.Enums;
+﻿namespace ProjectP.Enums;
 
 public enum Roles
 {
-    User
+    User,Admin
 }

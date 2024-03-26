@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProjectP.Data;
 using ProjectP.Data.Entities.Identity;
-using ProjectP.Entities;
 using ProjectP.Extensions;
 using ProjectP.Helpers;
 using ProjectP.Helpers.Converters;

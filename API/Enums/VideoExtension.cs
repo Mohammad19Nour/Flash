@@ -1,4 +1,4 @@
-﻿namespace AsparagusN.Enums;
+﻿namespace ProjectP.Enums;
 
 public enum VideoExtension
 {

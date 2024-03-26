@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using AsparagusN.Enums;
+using ProjectP.Enums;
 
 namespace ProjectP.Dtos.AccountDtos;
 

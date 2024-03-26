@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectP.Entities;
 using ProjectP.Interfaces;
 
 namespace ProjectP.Data.Repositories;
