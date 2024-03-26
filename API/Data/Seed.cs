@@ -14,10 +14,16 @@ public static class Seed
         UserManager<AppUser> userManager,IMapper mapper)
     {
         await SeedRoles(roleManager);
+        await SeedCategories(context);
     }
+
+    private static async Task SeedCategories(DataContext context)
+    {
+        throw new NotImplementedException();
+    }
+
     private static async Task SeedRoles(RoleManager<AppRole> roleManager)
     {
-        // await roleManager.CreateAsync(new() { Name = Roles.Employee.GetDisplayName() });
         if (await roleManager.Roles.AnyAsync()) return;
 
         var roles = new List<AppRole>
