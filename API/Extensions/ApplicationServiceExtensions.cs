@@ -24,6 +24,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IHotelService, HotelService>();
         services.AddScoped<IOfferService, OfferService>();
+        services.AddScoped<IFavoriteService, FavoriteService>();
         
         
         services.AddAutoMapper(typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));

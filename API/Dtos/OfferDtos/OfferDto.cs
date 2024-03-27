@@ -1,9 +1,9 @@
-﻿namespace ProjectP.Dtos.OfferDtos;
+﻿using ProjectP.Dtos.HotelDtos;
 
-public class OfferDto
+namespace ProjectP.Dtos.OfferDtos;
+
+public class OfferDto : OfferForHotelDto
 {
-    public int Id { get; set; }
-    public DateTime StartAt { get; set; }
-    public DateTime EndAt { get; set; }
-    public double Discount { get; set; }
+    
+    public HotelForOfferDto Hotel { get; set; }
 }

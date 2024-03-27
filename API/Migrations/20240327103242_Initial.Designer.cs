@@ -11,7 +11,7 @@ using ProjectP.Data;
 namespace ProjectP.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240326140655_Initial")]
+    [Migration("20240327103242_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -178,7 +178,8 @@ namespace ProjectP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("LocationId")
+                        .IsUnique();
 
                     b.HasIndex("OfferId")
                         .IsUnique();
@@ -403,6 +404,21 @@ namespace ProjectP.Migrations
                     b.ToTable("Sliders");
                 });
 
+            modelBuilder.Entity("ProjectP.Data.Entities.UserHotel", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserId", "HotelId");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("Favorites");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("ProjectP.Data.Entities.Identity.AppRole", null)
@@ -442,8 +458,8 @@ namespace ProjectP.Migrations
             modelBuilder.Entity("ProjectP.Data.Entities.Hotel", b =>
                 {
                     b.HasOne("ProjectP.Data.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
+                        .WithOne()
+                        .HasForeignKey("ProjectP.Data.Entities.Hotel", "LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -485,6 +501,25 @@ namespace ProjectP.Migrations
                         .IsRequired();
 
                     b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("ProjectP.Data.Entities.UserHotel", b =>
+                {
+                    b.HasOne("ProjectP.Data.Entities.Hotel", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectP.Data.Entities.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.Hotel", b =>

@@ -261,6 +261,30 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Favorites",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    HotelId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorites", x => new { x.UserId, x.HotelId });
+                    table.ForeignKey(
+                        name: "FK_Favorites_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Favorites_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
@@ -318,9 +342,15 @@ namespace ProjectP.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Favorites_HotelId",
+                table: "Favorites",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Hotels_LocationId",
                 table: "Hotels",
-                column: "LocationId");
+                column: "LocationId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Hotels_OfferId",
@@ -354,6 +384,9 @@ namespace ProjectP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Favorites");
 
             migrationBuilder.DropTable(
                 name: "Photos");

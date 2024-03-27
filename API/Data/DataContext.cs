@@ -23,6 +23,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<Slider> Sliders { get; set; }
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<Offer> Offers { get; set; }
+    public DbSet<UserHotel> Favorites { get; set; }
     public DbSet<Category> Categories { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -33,25 +34,17 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
 
-        builder.Entity<Hotel>()
-            .HasOne<Offer>(o => o.Offer)
-            .WithOne()
-            .HasForeignKey<Offer>(y => y.HotelId)
-            .IsRequired();
+       
         builder.Entity<Photo>()
             .HasOne(p => p.Hotel) // Assuming Hotel is the navigation property in Photo entity
             .WithMany(h => h.Photos) // Assuming Photos is the navigation property in Hotel entity
             .HasForeignKey(p => p.HotelId).OnDelete(DeleteBehavior.Cascade);
-        builder.Entity<Offer>()
-            .HasOne<Hotel>(o => o.Hotel)
-            .WithOne(h => h.Offer)
-            .HasForeignKey<Hotel>(y => y.OfferId)
+      
             
-            .OnDelete(DeleteBehavior.SetNull);
-            
+        builder.ApplyConfiguration(new UserHotelConfiguration());
         builder.ApplyConfiguration(new AppUserConfiguration());
-   //     builder.ApplyConfiguration(new HotelConfiguration());
-     //   builder.ApplyConfiguration(new OfferConfiguration());
+        builder.ApplyConfiguration(new HotelConfiguration());
+        builder.ApplyConfiguration(new OfferConfiguration());
         
         
         var sqlite = Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite";

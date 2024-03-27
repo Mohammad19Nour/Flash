@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectP.Data.Entities;
 using ProjectP.Dtos.HotelDtos;
 using ProjectP.Errors;
+using ProjectP.Extensions;
 using ProjectP.Interfaces;
 
 namespace ProjectP.Controllers;
@@ -11,28 +12,53 @@ public class HotelsController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IHotelService _hotelService;
+    private readonly IFavoriteService _favoriteService;
 
-    public HotelsController(IMapper mapper, IHotelService hotelService)
+    public HotelsController(IMapper mapper, IHotelService hotelService, IFavoriteService favoriteService)
     {
         _mapper = mapper;
         _hotelService = hotelService;
+        _favoriteService = favoriteService;
     }
 
     [HttpGet]
     public async Task<ActionResult<List<HotelDto>>> GetAllHotels()
     {
         var hotels = await _hotelService.GetAllHotels();
-        return Ok(new ApiOkResponse<List<HotelDto>>(_mapper.Map<List<HotelDto>>(hotels)));
+        var hotelsDto = _mapper.Map<List<HotelDto>>(hotels);
+        
+        if (User.Identity is { IsAuthenticated: true })
+        {
+            var email = User.GetEmail();
+            var favorite = await _favoriteService.GetFavoriteHotels(email);
+            foreach (var hotel in hotelsDto)
+            {
+                if (favorite.Any(c => c.Id == hotel.Id))
+                    hotel.IsFavorite = true;
+            }
+        }
+
+        return Ok(new ApiOkResponse<List<HotelDto>>(hotelsDto));
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<HotelDto>> GetHotel(int id)
     {
         var hotel = await _hotelService.GetHotelById(id);
-        if (hotel != null)
-        return Ok(new ApiOkResponse<HotelDto>(_mapper.Map<HotelDto>(hotel)));
-        
-        return Ok(new ApiResponse(404, "Hotel not found"));
+        if (hotel == null)
+            return Ok(new ApiResponse(404, "Hotel not found"));
+
+        var hotelDto = _mapper.Map<HotelDto>(hotel);
+
+        if (User.Identity is { IsAuthenticated: true })
+        {
+            var email = User.GetEmail();
+            var favorite = await _favoriteService.GetFavoriteHotels(email);
+            if (favorite.Any(c => c.Id == id))
+                hotelDto.IsFavorite = true;
+        }
+
+        return Ok(new ApiOkResponse<HotelDto>(hotelDto));
     }
 
     [HttpPost]

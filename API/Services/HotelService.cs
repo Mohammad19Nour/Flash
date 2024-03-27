@@ -32,7 +32,7 @@ public class HotelService : IHotelService
         return hotel;
     }
 
-    public async Task<ICollection<Hotel>> GetAllHotels()
+    public async Task<List<Hotel>> GetAllHotels()
     {
         var hotels = await _unitOfWork.Repository<Hotel>().GetQueryable()
             .Include(p => p.Photos)

@@ -7,9 +7,14 @@ namespace ProjectP.Helpers.Profiles;
 public class OffersProfile : Profile
 {
     public OffersProfile()
-    {CreateMap<Offer, OfferDto>();
+    {
+        CreateMap<Offer, OfferDto>();
+        
         CreateMap<UpdateOfferDto, Offer>().ForAllMembers(x =>
             x.Condition((src, dest, srcMember) => srcMember != null));
+        
         CreateMap<NewOfferDto, Offer>();
+
+        CreateMap<Offer, OfferForHotelDto>();
     }
 }

@@ -10,6 +10,7 @@ public class HotelsProfile : Profile
 {
     public HotelsProfile()
     {
+        CreateMap<Hotel, HotelForOfferDto>();
         CreateMap<Hotel, HotelDto>();
         CreateMap<Photo, PhotoDto>();
         CreateMap<UpdateHotelDto, Hotel>().ForAllMembers(x =>

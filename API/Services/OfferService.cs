@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using ProjectP.Data.Entities;
 using ProjectP.Dtos.OfferDtos;
 using ProjectP.Interfaces;
@@ -21,14 +22,25 @@ public class OfferService : IOfferService
 
     public async Task<List<OfferDto>> GetAllOffersAsync()
     {
-        var offers = await _unitOfWork.Repository<Offer>().ListAllAsync();
+        var offers = await _unitOfWork.Repository<Offer>().GetQueryable()
+            .Include(v => v.Hotel)
+            .ThenInclude(p=>p.Photos)
+            .Include(o=>o.Hotel)
+            .ThenInclude(h=>h.Location)
+            .ToListAsync();
 
         return _mapper.Map<List<OfferDto>>(offers);
     }
 
     public async Task<(Offer? offer, string message)> GetOfferByIdAsync(int offerId)
     {
-        var offer = await _unitOfWork.Repository<Offer>().GetByIdAsync(offerId);
+        var offer = await _unitOfWork.Repository<Offer>().GetQueryable()
+            .Include(v => v.Hotel)
+            .ThenInclude(p=>p.Photos)
+            .Include(o=>o.Hotel)
+            .ThenInclude(h=>h.Location)
+            .Where(h=>h.Id == offerId)
+            .FirstOrDefaultAsync();
 
         if (offer == null)
             return (null, "Offer not found");

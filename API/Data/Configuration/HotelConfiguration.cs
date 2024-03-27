@@ -9,13 +9,13 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
 {
     public void Configure(EntityTypeBuilder<Hotel> builder)
     {
-        builder.HasMany(c => c.Photos).WithOne().OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(c => c.Photos).WithOne(c=>c.Hotel).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(h => h.Location).WithOne().OnDelete(DeleteBehavior.Cascade);
         builder
-            .HasOne(o => o.Offer)
-            .WithOne(h => h.Hotel)
-            .HasForeignKey<Offer>(c=>c.HotelId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne<Offer>(o => o.Offer)
+            .WithOne()
+            .HasForeignKey<Offer>(y => y.HotelId)
+            .IsRequired();
       
     }
 }
