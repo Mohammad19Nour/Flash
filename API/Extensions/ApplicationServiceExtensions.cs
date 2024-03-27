@@ -25,9 +25,10 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IHotelService, HotelService>();
         services.AddScoped<IOfferService, OfferService>();
         services.AddScoped<IFavoriteService, FavoriteService>();
+        services.AddScoped<ITouristPlacesService, TouristPlacesService>();
         
         
-        services.AddAutoMapper(typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));
+        services.AddAutoMapper(typeof(TouristPlacesProfile),typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));
         
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         //  services.AddDbContext<DataContext>(opt => { opt.UseSqlServer(config.GetConnectionString("DefaultConnection")); });

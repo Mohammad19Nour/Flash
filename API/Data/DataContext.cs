@@ -25,6 +25,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<Offer> Offers { get; set; }
     public DbSet<UserHotel> Favorites { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<TouristPlace> TouristPlaces { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

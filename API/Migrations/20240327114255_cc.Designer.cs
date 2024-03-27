@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectP.Data;
 
@@ -10,9 +11,11 @@ using ProjectP.Data;
 namespace ProjectP.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240327114255_cc")]
+    partial class cc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
@@ -401,42 +404,6 @@ namespace ProjectP.Migrations
                     b.ToTable("Sliders");
                 });
 
-            modelBuilder.Entity("ProjectP.Data.Entities.TouristPlace", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ArabicDescription")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ArabicName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EnglishDescription")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EnglishName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("TouristPlaces");
-                });
-
             modelBuilder.Entity("ProjectP.Data.Entities.UserHotel", b =>
                 {
                     b.Property<int>("UserId")
@@ -534,17 +501,6 @@ namespace ProjectP.Migrations
                         .IsRequired();
 
                     b.Navigation("Hotel");
-                });
-
-            modelBuilder.Entity("ProjectP.Data.Entities.TouristPlace", b =>
-                {
-                    b.HasOne("ProjectP.Data.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.UserHotel", b =>
