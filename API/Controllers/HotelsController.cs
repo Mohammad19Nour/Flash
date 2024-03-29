@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ProjectP.Data.Entities;
+using ProjectP.Dtos;
 using ProjectP.Dtos.HotelDtos;
 using ProjectP.Errors;
 using ProjectP.Extensions;
@@ -22,9 +23,9 @@ public class HotelsController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<HotelDto>>> GetAllHotels()
+    public async Task<ActionResult<List<HotelDto>>> GetAllHotels([FromQuery]HotelFilterParameters filterParameters = null )
     {
-        var hotels = await _hotelService.GetAllHotels();
+        var hotels = await _hotelService.GetAllHotels(filterParameters);
         var hotelsDto = _mapper.Map<List<HotelDto>>(hotels);
         
         if (User.Identity is { IsAuthenticated: true })

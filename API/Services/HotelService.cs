@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectP.Data.Entities;
+using ProjectP.Dtos;
 using ProjectP.Dtos.HotelDtos;
 using ProjectP.Dtos.OfferDtos;
 using ProjectP.Interfaces;
@@ -34,15 +35,52 @@ public class HotelService : IHotelService
         return hotel;
     }
 
-    public async Task<List<Hotel>> GetAllHotels()
+    public async Task<List<Hotel>> GetAllHotels(HotelFilterParameters? filterParams = null)
     {
-        var hotels = await _unitOfWork.Repository<Hotel>().GetQueryable()
-            .Include(p => p.Photos)
+        var query = _unitOfWork.Repository<Hotel>().GetQueryable();
+
+        query = query.Include(p => p.Photos)
             .Include(l => l.Location)
             .Include(o => o.Offer)
-            .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType)
-            .ToListAsync();
+            .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType);
+
+        if (filterParams != null)
+        {
+            query = ApplyFilter(filterParams, query);
+        }
+
+        var hotels = await query.ToListAsync();
         return hotels;
+    }
+
+    private IQueryable<Hotel> ApplyFilter(HotelFilterParameters filterParams, IQueryable<Hotel> query)
+    {
+        if (filterParams.MinStars != null)
+            query = query.Where(h => h.Stars >= filterParams.MinStars);
+
+        if (filterParams.MaxStars != null)
+            query = query.Where(h => h.Stars <= filterParams.MaxStars);
+
+        if (filterParams.MinPrice == null)
+            filterParams.MinPrice = 0;
+
+        if (filterParams.MaxPrice == null)
+            filterParams.MaxPrice = 1e9;
+
+        query = query.Where(c =>!(c.MinPrice > filterParams.MaxPrice || c.MaxPrice < filterParams.MinPrice ));
+        
+        if (filterParams.RoomType != null && filterParams.RoomType.Trim().Length > 0)
+            query = query.Where(h=>h.HotelRoomTypes.Any(c=>c.RoomType.EnglishName.ToLower() == filterParams.RoomType.ToLower()));
+        return query;
+    }
+
+    private bool CheckIfIntersect(double cMinPrice, double cMaxPrice, double filterParamsMinPrice,
+        double filterParamsMaxPrice)
+    {
+        if (cMaxPrice < filterParamsMinPrice || cMinPrice > filterParamsMaxPrice)
+            return false;
+        Console.WriteLine(cMinPrice + " " + cMaxPrice + " " +filterParamsMinPrice + " " + filterParamsMaxPrice);
+        return true;
     }
 
     public async Task<(Hotel? Hotel, string Message)> AddHotel(NewHotelDto hotelDto)

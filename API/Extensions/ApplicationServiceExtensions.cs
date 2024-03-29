@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectP.Data;
 using ProjectP.Data.Entities;
 using ProjectP.Data.Repositories;
+using ProjectP.Dtos.HotelDtos;
 using ProjectP.Errors;
 using ProjectP.Helpers.Profiles;
 using ProjectP.Interfaces;
@@ -26,9 +27,10 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IOfferService, OfferService>();
         services.AddScoped<IFavoriteService, FavoriteService>();
         services.AddScoped<ITouristPlacesService, TouristPlacesService>();
+        services.AddScoped<IRoomTypeService, RoomTypeService>();
         
         
-        services.AddAutoMapper(typeof(TouristPlacesProfile),typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));
+        services.AddAutoMapper(typeof(RoomTypeProfile),typeof(TouristPlacesProfile),typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));
         
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         //  services.AddDbContext<DataContext>(opt => { opt.UseSqlServer(config.GetConnectionString("DefaultConnection")); });

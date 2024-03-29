@@ -25,61 +25,53 @@ public static class Seed
 
     private static async Task SeedRoomTypes(DataContext context)
     {
-        List<string> roomTypes = new List<string>
+        List<string> englishRoomTypes = new List<string>
         {
-            "Standard",
-            "Deluxe",
+            "Single Room",
+            "Double Room",
+            "Twin Room",
             "Suite",
+            "Deluxe Room",
             "Executive Suite",
-            "Family",
-            "Single",
-            "Double",
-            "Twin",
-            "Connecting",
+            "Standard Room",
+            "Family Room",
+            "Connecting Room",
+            "Junior Suite",
             "Presidential Suite",
-            "Penthouse Suite",
-            "Ocean View",
-            "Garden View",
-            "Poolside",
             "Villa",
             "Bungalow",
-            "Cottage",
-            "Loft",
-            "Studio",
-            "Apartment"
+            "Duplex Room",
+            "Studio Room"
         };
-        List<string> roomTypesArabic = new List<string>
+
+        List<string> arabicRoomTypes = new List<string>
         {
-            "غرفة قياسية",
-            "غرفة فاخرة",
-            "جناح",
-            "جناح تنفيذي",
-            "غرفة عائلية",
             "غرفة فردية",
             "غرفة مزدوجة",
             "غرفة توأم",
+            "جناح",
+            "غرفة ديلوكس",
+            "جناح تنفيذي",
+            "غرفة قياسية",
+            "غرفة عائلية",
             "غرفة متصلة",
+            "جناح صغير",
             "جناح رئاسي",
-            "جناح بنتهاوس",
-            "غرفة بإطلالة على البحر",
-            "غرفة بإطلالة على الحديقة",
-            "غرفة تطل على حمام السباحة",
             "فيلا",
             "بنغلو",
-            "كوخ",
-            "لوفت",
-            "استوديو",
-            "شقة"
+            "غرفة دوبلكس",
+            "غرفة استوديو"
         };
+
 
         if (await context.RoomTypes.AnyAsync()) return;
 
         int cnt = 0;
-        foreach (var type in roomTypes)
+        foreach (var type in englishRoomTypes)
         {
             context.RoomTypes.Add(new RoomType
             {
-                ArabicName = roomTypesArabic[cnt],
+                ArabicName = arabicRoomTypes[cnt],
                 EnglishName = type
             });
             cnt++;
