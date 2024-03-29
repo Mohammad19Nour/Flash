@@ -34,18 +34,14 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
             .WithOne(u => u.Role)
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
-
-       
-        builder.Entity<Photo>()
-            .HasOne(p => p.Hotel) // Assuming Hotel is the navigation property in Photo entity
-            .WithMany(h => h.Photos) // Assuming Photos is the navigation property in Hotel entity
-            .HasForeignKey(p => p.HotelId).OnDelete(DeleteBehavior.Cascade);
+        
       
             
         builder.ApplyConfiguration(new UserHotelConfiguration());
         builder.ApplyConfiguration(new AppUserConfiguration());
         builder.ApplyConfiguration(new HotelConfiguration());
         builder.ApplyConfiguration(new OfferConfiguration());
+        builder.ApplyConfiguration(new PhotoConfiguration());
         
         
         var sqlite = Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite";

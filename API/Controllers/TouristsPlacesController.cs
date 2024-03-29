@@ -33,7 +33,7 @@ public class TouristsPlacesController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult<TouristPlacesDto>> AddPlace(NewTouristPlacesDto newPlace)
+    public async Task<ActionResult<TouristPlacesDto>> AddPlace([FromForm]NewTouristPlacesDto newPlace)
     {
         var result = await _touristPlacesService.AddPlaceAsync(newPlace);
 
@@ -64,5 +64,22 @@ public class TouristsPlacesController : BaseApiController
         
         return Ok(new ApiResponse(400, result.message));
 
+    }
+    [HttpPost("{id:int}/photo")]
+    public async Task<ActionResult> AddPhoto(int id, [FromForm] ICollection<IFormFile> imageFiles)
+    {
+        var result = await _touristPlacesService.AddPhotosAsync(id, imageFiles);
+
+        if (result.succeed) return Ok(new ApiResponse(200, result.message));
+        return Ok(new ApiResponse(400, result.message));
+    }
+
+    [HttpDelete("{placeId:int}/photo")]
+    public async Task<ActionResult> DeletePhoto(int placeId, int photoId)
+    {
+        var result = await _touristPlacesService.DeletePhotoAsync(placeId, photoId);
+
+        if (result.succeed) return Ok(new ApiResponse(200, result.message));
+        return Ok(new ApiResponse(400, result.message));
     }
 }

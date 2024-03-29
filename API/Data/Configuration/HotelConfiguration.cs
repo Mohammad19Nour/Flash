@@ -9,7 +9,7 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
 {
     public void Configure(EntityTypeBuilder<Hotel> builder)
     {
-        builder.HasMany(c => c.Photos).WithOne(c=>c.Hotel).OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(c => c.Photos);
         builder.HasOne(h => h.Location).WithOne().OnDelete(DeleteBehavior.Cascade);
         builder
             .HasOne<Offer>(o => o.Offer)

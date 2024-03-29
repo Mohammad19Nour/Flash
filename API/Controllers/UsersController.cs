@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using ProjectP.Extensions;
 using ProjectP.Interfaces;
 
 namespace ProjectP.Controllers;
-
+[Authorize]
 public class UsersController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;

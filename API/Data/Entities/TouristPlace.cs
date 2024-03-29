@@ -19,5 +19,6 @@ public class TouristPlace
     public string EnglishDescription { get; set; }
 
     public Location Location { get; set; }
+    public List<Photo> Photos { get; set; } = new List<Photo>();
 
 }

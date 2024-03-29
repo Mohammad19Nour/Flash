@@ -226,6 +226,29 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TouristPlaces",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ArabicName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    EnglishName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    ArabicDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    EnglishDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    LocationId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TouristPlaces", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TouristPlaces_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Hotels",
                 columns: table => new
                 {
@@ -291,7 +314,8 @@ namespace ProjectP.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    HotelId = table.Column<int>(type: "INTEGER", nullable: false)
+                    HotelId = table.Column<int>(type: "INTEGER", nullable: true),
+                    TouristPlaceId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -300,8 +324,12 @@ namespace ProjectP.Migrations
                         name: "FK_Photos_Hotels_HotelId",
                         column: x => x.HotelId,
                         principalTable: "Hotels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_TouristPlaces_TouristPlaceId",
+                        column: x => x.TouristPlaceId,
+                        principalTable: "TouristPlaces",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -362,6 +390,16 @@ namespace ProjectP.Migrations
                 name: "IX_Photos_HotelId",
                 table: "Photos",
                 column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_TouristPlaceId",
+                table: "Photos",
+                column: "TouristPlaceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TouristPlaces_LocationId",
+                table: "TouristPlaces",
+                column: "LocationId");
         }
 
         /// <inheritdoc />
@@ -404,10 +442,13 @@ namespace ProjectP.Migrations
                 name: "Hotels");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "TouristPlaces");
 
             migrationBuilder.DropTable(
                 name: "Offers");
+
+            migrationBuilder.DropTable(
+                name: "Location");
         }
     }
 }

@@ -368,16 +368,21 @@ namespace ProjectP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("HotelId")
+                    b.Property<int?>("HotelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PictureUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("TouristPlaceId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("TouristPlaceId");
 
                     b.ToTable("Photos");
                 });
@@ -529,11 +534,15 @@ namespace ProjectP.Migrations
                 {
                     b.HasOne("ProjectP.Data.Entities.Hotel", "Hotel")
                         .WithMany("Photos")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelId");
+
+                    b.HasOne("ProjectP.Data.Entities.TouristPlace", "TouristPlace")
+                        .WithMany("Photos")
+                        .HasForeignKey("TouristPlaceId");
 
                     b.Navigation("Hotel");
+
+                    b.Navigation("TouristPlace");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.TouristPlace", b =>
@@ -585,6 +594,11 @@ namespace ProjectP.Migrations
                 {
                     b.Navigation("Hotel")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectP.Data.Entities.TouristPlace", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

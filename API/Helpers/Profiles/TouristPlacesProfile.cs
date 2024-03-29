@@ -13,7 +13,7 @@ public class TouristPlacesProfile : Profile
         CreateMap<UpdateTouristPlacesDto, TouristPlace>();
         CreateMap<TouristPlace, TouristPlacesDto>()
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Location.City))
-            .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.Longitude))
-            .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Latitude));
+            ; // .ForMember(dest => dest.ima, opt => opt.MapFrom(src => src.Location.Longitude))
+        // .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Latitude));
     }
 }

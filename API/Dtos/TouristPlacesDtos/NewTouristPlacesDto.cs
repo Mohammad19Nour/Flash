@@ -17,6 +17,7 @@ public class NewTouristPlacesDto
     public string EnglishDescription { get; set; }
     
     [Required] [MaxLength(100)] public string City { get; set; }
-    public double Longitude { get; set; }
-    public double Latitude { get; set; }
+    public double? Longitude { get; set; } = 0;
+    public double? Latitude { get; set; } = 0;
+    public List<IFormFile> Images { get; set; }
 }

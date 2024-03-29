@@ -1,4 +1,7 @@
-﻿namespace ProjectP.Dtos.TouristPlacesDtos;
+﻿using ProjectP.Data.Entities;
+using ProjectP.Dtos.HotelDtos;
+
+namespace ProjectP.Dtos.TouristPlacesDtos;
 
 public class TouristPlacesDto
 {
@@ -12,7 +15,9 @@ public class TouristPlacesDto
     
     public string EnglishDescription { get; set; }
     public string City { get; set; }
-    public double Longitude { get; set; }
-    public double Latitude { get; set; }
+
+    public List<PhotoDto> Photos { get; set; }
+   // public double Longitude { get; set; }
+   // public double Latitude { get; set; }
 
 }

@@ -64,7 +64,8 @@ public class HotelService : IHotelService
 
     public async Task<(bool Succeed, string Message)> DeleteHotel(int hotelId)
     {
-        var hotel = await _unitOfWork.Repository<Hotel>().GetByIdAsync(hotelId);
+        var hotel = await _unitOfWork.Repository<Hotel>().GetQueryable().Include(p=>p.Photos)
+            .Where(c=>c.Id == hotelId ).FirstOrDefaultAsync();
 
         if (hotel == null)
             return (false, "Hotel not found");
@@ -78,6 +79,11 @@ public class HotelService : IHotelService
             _unitOfWork.Repository<Offer>().Delete(offer);
         }
 
+        foreach (var p in hotel.Photos)
+        {
+            _unitOfWork.Repository<Photo>().Delete(p);
+        }
+        hotel.Photos.Clear();
         _unitOfWork.Repository<Hotel>().Delete(hotel);
 
         if (!await _unitOfWork.SaveChanges())

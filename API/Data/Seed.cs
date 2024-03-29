@@ -19,6 +19,44 @@ public static class Seed
         await SeedHotels(context);
         await SeedOffers(context);
         await SeedUsers(userManager);
+        await SeedPlaces(context);
+    }
+
+    private static async Task SeedPlaces(DataContext context)
+    {
+        if (await context.TouristPlaces.AnyAsync()) return;
+        var count = 5;
+        var places = new List<TouristPlace>();
+
+        for (int i = 1; i <= count; i++)
+        {
+            var hotel = new TouristPlace
+            {
+                ArabicName = $"Arabic Place {i}",
+                EnglishName = $"English Place {i}",
+
+                ArabicDescription = $"Arabic description for Place {i}",
+                EnglishDescription = $"English description for Place {i}",
+
+                Location = new Location
+                {
+                    City = $"City {i}",
+                    StreetName = $"Street Name {i}",
+                    Longitude = 1.0 * i,
+                    Latitude = 1.0 * i
+                },
+
+                Photos = Enumerable.Range(1, 2).Select(j => new Photo
+                {
+                    PictureUrl = $"images/{(j) % 2 + 1}.jpg"
+                }).ToList()
+            };
+
+            places.Add(hotel);
+        }
+
+        context.TouristPlaces.AddRange(places);
+        await context.SaveChangesAsync();
     }
 
     private static async Task SeedUsers(UserManager<AppUser> userManager)
