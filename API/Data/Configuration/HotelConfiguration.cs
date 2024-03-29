@@ -16,6 +16,12 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
             .WithOne()
             .HasForeignKey<Offer>(y => y.HotelId)
             .IsRequired();
-      
+
+        builder.HasMany(h => h.HotelRoomTypes)
+            .WithOne(t => t.Hotel)
+            .HasForeignKey(t => t.HotelId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

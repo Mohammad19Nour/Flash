@@ -17,4 +17,6 @@ public class NewHotelDto
     [Required] [Range(0, double.MaxValue)] public double MaxPrice { get; set; }
    [Required] [MinLength(1,ErrorMessage = "should add at least one photo")] public ICollection<IFormFile> Photos { get; set; }
     public NewLocationDto Location { get; set; }
+    public List<string> RoomTypes { get; set; } = new List<string>();
+    public List<int> Beds { get; set; } = new List<int>();
 }

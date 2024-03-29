@@ -14,12 +14,78 @@ public static class Seed
     public static async Task SeedData(DataContext context, RoleManager<AppRole> roleManager,
         UserManager<AppUser> userManager, IMapper mapper)
     {
+        await SeedRoomTypes(context);
         await SeedRoles(roleManager);
         await SeedCategories(context);
         await SeedHotels(context);
         await SeedOffers(context);
         await SeedUsers(userManager);
         await SeedPlaces(context);
+    }
+
+    private static async Task SeedRoomTypes(DataContext context)
+    {
+        List<string> roomTypes = new List<string>
+        {
+            "Standard",
+            "Deluxe",
+            "Suite",
+            "Executive Suite",
+            "Family",
+            "Single",
+            "Double",
+            "Twin",
+            "Connecting",
+            "Presidential Suite",
+            "Penthouse Suite",
+            "Ocean View",
+            "Garden View",
+            "Poolside",
+            "Villa",
+            "Bungalow",
+            "Cottage",
+            "Loft",
+            "Studio",
+            "Apartment"
+        };
+        List<string> roomTypesArabic = new List<string>
+        {
+            "غرفة قياسية",
+            "غرفة فاخرة",
+            "جناح",
+            "جناح تنفيذي",
+            "غرفة عائلية",
+            "غرفة فردية",
+            "غرفة مزدوجة",
+            "غرفة توأم",
+            "غرفة متصلة",
+            "جناح رئاسي",
+            "جناح بنتهاوس",
+            "غرفة بإطلالة على البحر",
+            "غرفة بإطلالة على الحديقة",
+            "غرفة تطل على حمام السباحة",
+            "فيلا",
+            "بنغلو",
+            "كوخ",
+            "لوفت",
+            "استوديو",
+            "شقة"
+        };
+
+        if (await context.RoomTypes.AnyAsync()) return;
+
+        int cnt = 0;
+        foreach (var type in roomTypes)
+        {
+            context.RoomTypes.Add(new RoomType
+            {
+                ArabicName = roomTypesArabic[cnt],
+                EnglishName = type
+            });
+            cnt++;
+        }
+
+        await context.SaveChangesAsync();
     }
 
     private static async Task SeedPlaces(DataContext context)
@@ -116,6 +182,8 @@ public static class Seed
     private static async Task SeedHotels(DataContext context)
     {
         if (await context.Hotels.AnyAsync()) return;
+        var roomTypes = await context.RoomTypes.ToListAsync();
+        int sz = roomTypes.Count;
         var count = 5;
         var hotels = new List<Hotel>();
 
@@ -123,6 +191,18 @@ public static class Seed
         {
             var hotel = new Hotel
             {
+                HotelRoomTypes = new List<HotelRoomType>
+                {
+                    new HotelRoomType
+                    {
+                        RoomType = roomTypes[(i*i+1+i) % sz]
+                    },
+                    
+                    new HotelRoomType
+                    {
+                        RoomType = roomTypes[(i*i+2+i) % sz]
+                    },
+                },
                 ArabicName = $"Arabic Hotel {i}",
                 EnglishName = $"English Hotel {i}",
                 Email = $"hotel{i}@example.com",

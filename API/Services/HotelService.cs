@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectP.Data.Entities;
 using ProjectP.Dtos.HotelDtos;
@@ -28,6 +29,7 @@ public class HotelService : IHotelService
             .Include(l => l.Location)
             .Include(o => o.Offer)
             .Include(o => o.Offer)
+            .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType)
             .FirstOrDefaultAsync(x => x.Id == id);
         return hotel;
     }
@@ -38,6 +40,7 @@ public class HotelService : IHotelService
             .Include(p => p.Photos)
             .Include(l => l.Location)
             .Include(o => o.Offer)
+            .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType)
             .ToListAsync();
         return hotels;
     }
@@ -56,6 +59,24 @@ public class HotelService : IHotelService
             hotelToAdd.Photos.Add(new Photo { PictureUrl = imageResult.Url });
         }
 
+        var roomTypes = await _unitOfWork.Repository<RoomType>().ListAllAsync();
+        var roomTypeNames = roomTypes.Select(c => c.EnglishName.ToLower()).ToList();
+
+        foreach (var room in hotelDto.RoomTypes)
+        {
+            var lower = room.ToLower();
+
+            if (roomTypeNames.All(r => r != lower))
+                return (null, $"{room} not found as a room type");
+            var type = roomTypes.First(c => c.EnglishName.ToLower() == lower);
+
+            hotelToAdd.HotelRoomTypes.Add(new HotelRoomType
+            {
+                RoomType = type,
+                Hotel = hotelToAdd
+            });
+        }
+
         _unitOfWork.Repository<Hotel>().Add(hotelToAdd);
         if (await _unitOfWork.SaveChanges())
             return (hotelToAdd, "Done");
@@ -64,8 +85,8 @@ public class HotelService : IHotelService
 
     public async Task<(bool Succeed, string Message)> DeleteHotel(int hotelId)
     {
-        var hotel = await _unitOfWork.Repository<Hotel>().GetQueryable().Include(p=>p.Photos)
-            .Where(c=>c.Id == hotelId ).FirstOrDefaultAsync();
+        var hotel = await _unitOfWork.Repository<Hotel>().GetQueryable().Include(p => p.Photos)
+            .Where(c => c.Id == hotelId).FirstOrDefaultAsync();
 
         if (hotel == null)
             return (false, "Hotel not found");
@@ -83,6 +104,7 @@ public class HotelService : IHotelService
         {
             _unitOfWork.Repository<Photo>().Delete(p);
         }
+
         hotel.Photos.Clear();
         _unitOfWork.Repository<Hotel>().Delete(hotel);
 
@@ -103,17 +125,62 @@ public class HotelService : IHotelService
             .Include(p => p.Photos)
             .Include(l => l.Location)
             .Include(o => o.Offer)
+            .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType)
             .Where(h => h.Id == hotelId)
             .FirstOrDefaultAsync();
 
         if (hotel == null)
             return (null, "Hotel not found");
 
+        var roomTypes = await _unitOfWork.Repository<RoomType>().ListAllAsync();
+        var roomTypeNames = roomTypes.Select(c => c.EnglishName.ToLower()).ToList();
+        var hotelRoomTypes = hotel.HotelRoomTypes.Select(c => c.RoomType).ToList();
+
+        if (hotelDto.RoomTypes != null)
+        {
+            hotelDto.RoomTypes = hotelDto.RoomTypes.Select(r => r.ToLower()).ToList();
+            foreach (var type in hotelDto.RoomTypes.Where(type => roomTypeNames.All(n => n != type)))
+            {
+                return (null, $"{type} is a wrong room type");
+            }
+
+            UpdateRooms(hotelDto.RoomTypes, hotelRoomTypes, roomTypes, hotel);
+        }
+
         _mapper.Map(hotelDto, hotel);
         _unitOfWork.Repository<Hotel>().Update(hotel);
+
         if (await _unitOfWork.SaveChanges())
             return (hotel, "Done");
         return (null, "Failed to update hotel");
+    }
+
+    private static void UpdateRooms(List<string> roomTypesDto, List<RoomType> hotelRoomTypes,
+        IReadOnlyList<RoomType> roomTypes, Hotel hotel)
+    {
+        var roomToDelete = (from roomType in hotelRoomTypes
+            let exist = roomTypesDto.Any(c => c == roomType.EnglishName.ToLower())
+            where !exist
+            select roomType).ToList();
+
+        var roomToAdd = roomTypesDto.Select(type => roomTypes.First(c => c.EnglishName.ToLower() == type))
+            .Where(tmp => hotelRoomTypes.FirstOrDefault(c => c.Id == tmp.Id) == null).ToList();
+
+        var toDelete = hotel.HotelRoomTypes.Where(c => roomToDelete.Select(id => id.Id).Contains(c.RoomTypeId))
+            .ToList();
+
+        foreach (var hotelRoomType in toDelete)
+        {
+            hotel.HotelRoomTypes.Remove(hotelRoomType);
+        }
+
+        foreach (var hotelRoomType in roomToAdd)
+        {
+            hotel.HotelRoomTypes.Add(new HotelRoomType
+            {
+                RoomType = hotelRoomType
+            });
+        }
     }
 
     public async Task<(bool Succeed, string Message)> AddPhotos(int hotelId, ICollection<IFormFile> imageFiles)

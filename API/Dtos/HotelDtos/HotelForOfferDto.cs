@@ -18,4 +18,5 @@ public class HotelForOfferDto
     public ICollection<PhotoDto> Photos { get; set; }
     public LocationDto Location { get; set; }
     public bool IsFavorite { get; set; } = false;
+    public List<RoomTypeDto> RoomTypes { get; set; }
 }

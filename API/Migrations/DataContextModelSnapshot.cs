@@ -184,6 +184,27 @@ namespace ProjectP.Migrations
                     b.ToTable("Hotels");
                 });
 
+            modelBuilder.Entity("ProjectP.Data.Entities.HotelRoomType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("RoomTypeId");
+
+                    b.ToTable("HotelRoomType");
+                });
+
             modelBuilder.Entity("ProjectP.Data.Entities.Identity.AppRole", b =>
                 {
                     b.Property<int>("Id")
@@ -387,6 +408,25 @@ namespace ProjectP.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("ProjectP.Data.Entities.RoomType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ArabicName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EnglishName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoomTypes");
+                });
+
             modelBuilder.Entity("ProjectP.Data.Entities.Slider", b =>
                 {
                     b.Property<int>("Id")
@@ -511,6 +551,25 @@ namespace ProjectP.Migrations
                     b.Navigation("Offer");
                 });
 
+            modelBuilder.Entity("ProjectP.Data.Entities.HotelRoomType", b =>
+                {
+                    b.HasOne("ProjectP.Data.Entities.Hotel", "Hotel")
+                        .WithMany("HotelRoomTypes")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectP.Data.Entities.RoomType", "RoomType")
+                        .WithMany("HotelRoomTypes")
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("RoomType");
+                });
+
             modelBuilder.Entity("ProjectP.Data.Entities.Identity.AppUserRole", b =>
                 {
                     b.HasOne("ProjectP.Data.Entities.Identity.AppRole", "Role")
@@ -577,6 +636,8 @@ namespace ProjectP.Migrations
 
             modelBuilder.Entity("ProjectP.Data.Entities.Hotel", b =>
                 {
+                    b.Navigation("HotelRoomTypes");
+
                     b.Navigation("Photos");
                 });
 
@@ -594,6 +655,11 @@ namespace ProjectP.Migrations
                 {
                     b.Navigation("Hotel")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectP.Data.Entities.RoomType", b =>
+                {
+                    b.Navigation("HotelRoomTypes");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.TouristPlace", b =>

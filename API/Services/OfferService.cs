@@ -27,6 +27,8 @@ public class OfferService : IOfferService
             .ThenInclude(p=>p.Photos)
             .Include(o=>o.Hotel)
             .ThenInclude(h=>h.Location)
+            .Include(o=>o.Hotel)
+            .ThenInclude(h=>h.HotelRoomTypes).ThenInclude(c=>c.RoomType)
             .ToListAsync();
 
         return _mapper.Map<List<OfferDto>>(offers);
@@ -39,6 +41,8 @@ public class OfferService : IOfferService
             .ThenInclude(p=>p.Photos)
             .Include(o=>o.Hotel)
             .ThenInclude(h=>h.Location)
+            .Include(o=>o.Hotel)
+            .ThenInclude(h=>h.HotelRoomTypes).ThenInclude(c=>c.RoomType)
             .Where(h=>h.Id == offerId)
             .FirstOrDefaultAsync();
 

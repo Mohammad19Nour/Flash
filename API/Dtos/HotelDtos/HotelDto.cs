@@ -7,4 +7,5 @@ namespace ProjectP.Dtos.HotelDtos;
 public class HotelDto : HotelForOfferDto
 {
     public OfferForHotelDto Offer { get; set; }
+    
 }

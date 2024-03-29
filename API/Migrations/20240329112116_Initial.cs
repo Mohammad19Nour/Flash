@@ -106,6 +106,20 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RoomTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ArabicName = table.Column<string>(type: "TEXT", nullable: false),
+                    EnglishName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sliders",
                 columns: table => new
                 {
@@ -308,6 +322,32 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HotelRoomType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    HotelId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoomTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotelRoomType", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HotelRoomType_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HotelRoomType_RoomTypes_RoomTypeId",
+                        column: x => x.RoomTypeId,
+                        principalTable: "RoomTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
@@ -375,6 +415,16 @@ namespace ProjectP.Migrations
                 column: "HotelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HotelRoomType_HotelId",
+                table: "HotelRoomType",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotelRoomType_RoomTypeId",
+                table: "HotelRoomType",
+                column: "RoomTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Hotels_LocationId",
                 table: "Hotels",
                 column: "LocationId",
@@ -427,6 +477,9 @@ namespace ProjectP.Migrations
                 name: "Favorites");
 
             migrationBuilder.DropTable(
+                name: "HotelRoomType");
+
+            migrationBuilder.DropTable(
                 name: "Photos");
 
             migrationBuilder.DropTable(
@@ -437,6 +490,9 @@ namespace ProjectP.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "RoomTypes");
 
             migrationBuilder.DropTable(
                 name: "Hotels");

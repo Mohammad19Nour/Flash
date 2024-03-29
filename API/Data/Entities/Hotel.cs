@@ -23,4 +23,6 @@ public class Hotel
     public Offer? Offer { get; set; }
     public int? OfferId { get; set; }
 
+    public ICollection<HotelRoomType> HotelRoomTypes { get; set; } = new List<HotelRoomType>();
+
 }

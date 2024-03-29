@@ -26,17 +26,12 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int,
     public DbSet<UserHotel> Favorites { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<TouristPlace> TouristPlaces { get; set; }
+    public DbSet<RoomType> RoomTypes { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
-        builder.Entity<AppRole>().HasMany(ur => ur.UserRoles)
-            .WithOne(u => u.Role)
-            .HasForeignKey(ur => ur.RoleId)
-            .IsRequired();
-        
-      
             
+        builder.ApplyConfiguration(new AppRoleConfiguration());
         builder.ApplyConfiguration(new UserHotelConfiguration());
         builder.ApplyConfiguration(new AppUserConfiguration());
         builder.ApplyConfiguration(new HotelConfiguration());

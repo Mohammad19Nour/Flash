@@ -16,4 +16,6 @@ public class UpdateHotelDto
     [Range(0, double.MaxValue)] public double? MinPrice { get; set; }
     [Range(0, double.MaxValue)] public double? MaxPrice { get; set; }
     public UpdateLocationDto? Location { get; set; }
+    public List<string>? RoomTypes { get; set; }
+    public List<int>? Beds { get; set; }
 }
