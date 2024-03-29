@@ -57,6 +57,9 @@ public class UsersController : BaseApiController
                 user.PictureUrl = photoResult.Url;
             }
 
+            if (dto.CountryPrifix != null)
+                user.CountryPrifix = dto.CountryPrifix;
+
            
             _unitOfWork.Repository<AppUser>().Update(user);
 

@@ -11,6 +11,8 @@ public class AccountDto
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string? PhoneNumber { get; set; }
+    
+    public string? CountryPrifix { get; set; }
  //   public DateTime Birthday { get; set; }
     
     //public DateTime RegistrationDate { get; set; }

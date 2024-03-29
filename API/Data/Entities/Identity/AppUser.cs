@@ -13,6 +13,7 @@ public class AppUser : IdentityUser<int>
     public string? PictureUrl { get; set; }
     public Gender Gender { get; set; }
     public string PhoneNumber { get; set; }
+    public string CountryPrifix { get; set; }
 
     public DateTime RegistrationDate { get; set; } = DateTime.Now;
     public DateTime Birthday { get; set; } = DateTime.Today;

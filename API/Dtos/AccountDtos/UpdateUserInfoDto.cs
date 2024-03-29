@@ -6,4 +6,5 @@ public class UpdateUserInfoDto
     public string? LastName { get; set; }
     public string? PhoneNumber { get; set; }
     public IFormFile? Image { get; set; }
+    public string? CountryPrifix { get; set; }
 }

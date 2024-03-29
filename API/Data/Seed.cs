@@ -128,6 +128,7 @@ public static class Seed
             FirstName = "alic",
             LastName = "bob",
             PictureUrl = "images/1.jpg",
+            CountryPrifix = "+971",
             EmailConfirmed = true,
             Gender = Gender.Male,
             PhoneNumber = "971356205634"
@@ -141,6 +142,7 @@ public static class Seed
             FirstName = "bob",
             LastName = "alic",
             PictureUrl = "images/2.jpg",
+            CountryPrifix = "+971",
             EmailConfirmed = true,
             Gender = Gender.Female,
             PhoneNumber = "97139205634"
