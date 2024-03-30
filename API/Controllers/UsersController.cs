@@ -15,13 +15,15 @@ public class UsersController : BaseApiController
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IMediaService _mediaService;
 
-    public UsersController(IUnitOfWork unitOfWork,IMapper mapper,
+    public UsersController(IUnitOfWork unitOfWork,IMapper mapper,UserManager<AppUser> userManager,
         IMediaService mediaService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _userManager = userManager;
         _mediaService = mediaService;
     }
     
@@ -59,7 +61,20 @@ public class UsersController : BaseApiController
 
             if (dto.CountryPrifix != null)
                 user.CountryPrifix = dto.CountryPrifix;
+            if (dto.Gender != null)
+                user.Gender = dto.Gender.Value;
 
+            if (dto.Email != null)
+            {
+                dto.Email = dto.Email.ToLower();
+               var ex = await _userManager.Users.FirstOrDefaultAsync(c => c.Email.ToLower() == dto.Email);
+               if (ex != null && ex.Id != user.Id)
+                   return Ok(new ApiResponse(400, "This email already token"));
+
+               user.Email = dto.Email;
+               user.UserName = dto.Email;
+               user.NormalizedEmail = dto.Email;
+            }
            
             _unitOfWork.Repository<AppUser>().Update(user);
 

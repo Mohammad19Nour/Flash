@@ -25,7 +25,7 @@ public class OffersController : BaseApiController
     {
         var offers = await _hotelService.GetAllHotelsWithOffer();
 
-        return Ok(offers);
+        return Ok(new ApiOkResponse<List<HotelDto>>(offers));
     }
 
     /*[HttpGet("{id:int}")]
