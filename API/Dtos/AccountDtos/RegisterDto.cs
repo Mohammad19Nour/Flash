@@ -25,4 +25,5 @@ public class RegisterDto
     [Required(ErrorMessage = "Phone number required")]
     public string PhoneNumber { get; set; }
     public IFormFile? Image { get; set; }
+    public string CountryPrifix { get; set; }
 }
