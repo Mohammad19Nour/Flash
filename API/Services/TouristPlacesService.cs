@@ -19,20 +19,25 @@ public class TouristPlacesService : ITouristPlacesService
         _mediaService = mediaService;
     }
 
-    public async Task<List<TouristPlacesDto>> GetAllPlacesAsync()
+    public async Task< List<Dictionary<string,object>>> GetAllPlacesAsync()
     {
         var dbPlaces = await _unitOfWork.Repository<TouristPlace>().GetQueryable()
-            .Include(c => c.Location)
             .Include(p=>p.Photos)
             .ToListAsync();
 
-        return _mapper.Map<List<TouristPlacesDto>>(dbPlaces);
+        var grouped = dbPlaces.GroupBy(p => new { p.CityEN, p.City })
+            .Select(group => new Dictionary<string, object>
+            {
+                {"city" , group.Key.City},
+                { "cityEN" , group.Key.CityEN },
+                { "touristplaces" , group.Select(c=>_mapper.Map<TouristPlacesDto>(c)).ToList() }
+            }).ToList();
+        return grouped;
     }
 
     public async Task<TouristPlacesDto?> GetPlaceByIdAsync(int id)
     {
         var dbPlace = await _unitOfWork.Repository<TouristPlace>().GetQueryable()
-            .Include(c => c.Location)
             .Include(p=>p.Photos)
             .Where(p => p.Id == id)
             .FirstOrDefaultAsync();
@@ -46,13 +51,6 @@ public class TouristPlacesService : ITouristPlacesService
     public async Task<(TouristPlacesDto? location, string message)> AddPlaceAsync(NewTouristPlacesDto newPlace)
     {
         var placeToAdd = _mapper.Map<TouristPlace>(newPlace);
-        placeToAdd.Location = new Location
-        {
-            StreetName = "",
-            City = newPlace.City,
-            Longitude = newPlace.Longitude??0,
-            Latitude = newPlace.Latitude??0
-        };
 
         foreach (var img in newPlace.Images)
         {
@@ -75,7 +73,6 @@ public class TouristPlacesService : ITouristPlacesService
         UpdateTouristPlacesDto place)
     {
         var dbPlace = await _unitOfWork.Repository<TouristPlace>().GetQueryable()
-            .Include(c => c.Location)
             .Where(p => p.Id == id)
             .FirstOrDefaultAsync();
 
@@ -84,14 +81,6 @@ public class TouristPlacesService : ITouristPlacesService
 
         _mapper.Map(place, dbPlace);
 
-        if (place.City != null)
-            dbPlace.Location.City = place.City;
-
-        if (place.Latitude != null)
-            dbPlace.Location.Latitude = place.Latitude.Value;
-
-        if (place.Longitude != null)
-            dbPlace.Location.Longitude = place.Longitude.Value;
         
         _unitOfWork.Repository<TouristPlace>().Update(dbPlace);
 

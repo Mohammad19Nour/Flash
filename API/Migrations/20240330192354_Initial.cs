@@ -135,6 +135,26 @@ namespace ProjectP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TouristPlaces",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ArabicName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    EnglishName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    ArabicDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    EnglishDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Longitude = table.Column<double>(type: "REAL", nullable: false),
+                    Latitude = table.Column<double>(type: "REAL", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: false),
+                    CityEN = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TouristPlaces", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -236,29 +256,6 @@ namespace ProjectP.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TouristPlaces",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArabicName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    EnglishName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ArabicDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    EnglishDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    LocationId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TouristPlaces", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TouristPlaces_Location_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Location",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -446,11 +443,6 @@ namespace ProjectP.Migrations
                 name: "IX_Photos_TouristPlaceId",
                 table: "Photos",
                 column: "TouristPlaceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TouristPlaces_LocationId",
-                table: "TouristPlaces",
-                column: "LocationId");
         }
 
         /// <inheritdoc />
@@ -502,10 +494,10 @@ namespace ProjectP.Migrations
                 name: "TouristPlaces");
 
             migrationBuilder.DropTable(
-                name: "Offers");
+                name: "Location");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Offers");
         }
     }
 }

@@ -466,6 +466,14 @@ namespace ProjectP.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CityEN")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("EnglishDescription")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -476,12 +484,13 @@ namespace ProjectP.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LocationId")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
 
                     b.ToTable("TouristPlaces");
                 });
@@ -606,17 +615,6 @@ namespace ProjectP.Migrations
                     b.Navigation("Hotel");
 
                     b.Navigation("TouristPlace");
-                });
-
-            modelBuilder.Entity("ProjectP.Data.Entities.TouristPlace", b =>
-                {
-                    b.HasOne("ProjectP.Data.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("ProjectP.Data.Entities.UserHotel", b =>

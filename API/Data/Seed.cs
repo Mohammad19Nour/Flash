@@ -95,14 +95,10 @@ public static class Seed
 
                 ArabicDescription = $"Arabic description for Place {i}",
                 EnglishDescription = $"English description for Place {i}",
-
-                Location = new Location
-                {
-                    City = $"City {i}",
-                    StreetName = $"Street Name {i}",
-                    Longitude = 1.0 * i,
-                    Latitude = 1.0 * i
-                },
+                City = $"City {i}",
+                CityEN = $"CityEN {i}",
+                Longitude = 1.0 * i,
+                Latitude = 1.0 * i,
 
                 Photos = Enumerable.Range(1, 2).Select(j => new Photo
                 {

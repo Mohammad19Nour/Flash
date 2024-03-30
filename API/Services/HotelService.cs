@@ -11,6 +11,9 @@ namespace ProjectP.Services;
 
 public class HotelService : IHotelService
 {
+    
+        double radiusInKm = 158;
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMediaService _mediaService;
     private readonly IMapper _mapper;
@@ -44,6 +47,7 @@ public class HotelService : IHotelService
             .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType);
         query = query.Where(c => c.Offer != null);
         var hotel = await query.ToListAsync();
+
         return _mapper.Map<List<HotelDto>>(hotel);
     }
 
@@ -62,6 +66,17 @@ public class HotelService : IHotelService
         }
 
         var hotels = await query.ToListAsync();
+
+        if (filterParams != null)
+        {
+            if (filterParams.Latitude != null && filterParams.Longitude != null)
+            {
+                hotels = hotels.Where(place => CalculateDistance(filterParams.Latitude.Value,
+                    filterParams.Longitude.Value,
+                    place.Location.Latitude, place.Location.Longitude) <= radiusInKm).ToList();
+            }
+        }
+
         return hotels;
     }
 
@@ -79,11 +94,32 @@ public class HotelService : IHotelService
         if (filterParams.MaxPrice == null)
             filterParams.MaxPrice = 1e9;
 
-        query = query.Where(c =>!(c.MinPrice > filterParams.MaxPrice || c.MaxPrice < filterParams.MinPrice ));
-        
+        query = query.Where(c => !(c.MinPrice > filterParams.MaxPrice || c.MaxPrice < filterParams.MinPrice));
+
         if (filterParams.RoomType != null && filterParams.RoomType.Trim().Length > 0)
-            query = query.Where(h=>h.HotelRoomTypes.Any(c=>c.RoomType.EnglishName.ToLower() == filterParams.RoomType.ToLower()));
+            query = query.Where(h =>
+                h.HotelRoomTypes.Any(c => c.RoomType.EnglishName.ToLower() == filterParams.RoomType.ToLower()));
+
         return query;
+    }
+
+    private static double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+    {
+        const double R = 6371; // Radius of the earth in kilometers
+        var dLat = Deg2Rad(lat2 - lat1);
+        var dLon = Deg2Rad(lon2 - lon1);
+        var a =
+            Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+            Math.Cos(Deg2Rad(lat1)) * Math.Cos(Deg2Rad(lat2)) *
+            Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        var d = R * c; // Distance in kilometers
+        return d;
+    }
+
+    static double Deg2Rad(double deg)
+    {
+        return deg * (Math.PI / 180);
     }
 
     private bool CheckIfIntersect(double cMinPrice, double cMaxPrice, double filterParamsMinPrice,
@@ -91,7 +127,7 @@ public class HotelService : IHotelService
     {
         if (cMaxPrice < filterParamsMinPrice || cMinPrice > filterParamsMaxPrice)
             return false;
-        Console.WriteLine(cMinPrice + " " + cMaxPrice + " " +filterParamsMinPrice + " " + filterParamsMaxPrice);
+        Console.WriteLine(cMinPrice + " " + cMaxPrice + " " + filterParamsMinPrice + " " + filterParamsMaxPrice);
         return true;
     }
 

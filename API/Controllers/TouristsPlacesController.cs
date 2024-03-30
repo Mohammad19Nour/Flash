@@ -19,7 +19,7 @@ public class TouristsPlacesController : BaseApiController
     {
         var places = await _touristPlacesService.GetAllPlacesAsync();
 
-        return Ok(new ApiOkResponse<List<TouristPlacesDto>>(places));
+        return Ok(new ApiOkResponse< List<Dictionary<string,object>>>(places));
     }
 
     [HttpGet("{id:int}")]

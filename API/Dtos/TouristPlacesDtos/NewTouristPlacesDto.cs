@@ -19,5 +19,6 @@ public class NewTouristPlacesDto
     [Required] [MaxLength(100)] public string City { get; set; }
     public double? Longitude { get; set; } = 0;
     public double? Latitude { get; set; } = 0;
+    [Required] [MaxLength(100)]  public string CityEN { get; set; }
     public List<IFormFile> Images { get; set; }
 }

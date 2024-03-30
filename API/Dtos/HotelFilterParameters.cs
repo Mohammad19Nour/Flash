@@ -9,5 +9,7 @@ public class HotelFilterParameters
     public int? MaxStars { get; set; }
   //  public int? Beds { get; set; }
     public string? RoomType { get; set; }
+    public double? Longitude { get; set; }
+    public double? Latitude { get; set; }
 
 }
