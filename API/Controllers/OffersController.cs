@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ProjectP.Dtos.HotelDtos;
 using ProjectP.Dtos.OfferDtos;
 using ProjectP.Errors;
 using ProjectP.Interfaces;
@@ -9,23 +10,25 @@ namespace ProjectP.Controllers;
 public class OffersController : BaseApiController
 {
     private readonly IOfferService _offerService;
+    private readonly IHotelService _hotelService;
     private readonly IMapper _mapper;
 
-    public OffersController(IOfferService offerService, IMapper mapper)
+    public OffersController(IOfferService offerService, IHotelService hotelService,IMapper mapper)
     {
         _offerService = offerService;
+        _hotelService = hotelService;
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<OfferDto>>> GetAllOffer()
+    public async Task<ActionResult<List<HotelDto>>> GetAllOffer()
     {
-        var offers = await _offerService.GetAllOffersAsync();
+        var offers = await _hotelService.GetAllHotelsWithOffer();
 
-        return Ok(new ApiOkResponse<List<OfferDto>>(offers));
+        return Ok(offers);
     }
 
-    [HttpGet("{id:int}")]
+    /*[HttpGet("{id:int}")]
     public async Task<ActionResult<OfferDto>> GetOfferById(int id)
     {
         var result = await _offerService.GetOfferByIdAsync(id);
@@ -34,7 +37,7 @@ public class OffersController : BaseApiController
             return Ok(new ApiResponse(400, result.message));
 
         return Ok(new ApiOkResponse<OfferDto>(_mapper.Map<OfferDto>(result.offer)));
-    }
+    }*/
 
     [HttpPost]
     public async Task<ActionResult<OfferDto>> AddOffer(NewOfferDto offerDto)

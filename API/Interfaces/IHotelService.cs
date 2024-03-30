@@ -7,6 +7,7 @@ namespace ProjectP.Interfaces;
 public interface IHotelService
 {
     public Task<Hotel?> GetHotelById(int id);
+    public Task<List<HotelDto>> GetAllHotelsWithOffer();
     public Task<List<Hotel>> GetAllHotels(HotelFilterParameters? parameters = null);
     public Task<(Hotel? Hotel, string Message)> AddHotel(NewHotelDto hotelDto);
     public Task<(bool Succeed, string Message)> DeleteHotel(int hotelId);

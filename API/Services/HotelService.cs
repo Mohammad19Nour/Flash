@@ -29,10 +29,22 @@ public class HotelService : IHotelService
             .Include(p => p.Photos)
             .Include(l => l.Location)
             .Include(o => o.Offer)
-            .Include(o => o.Offer)
             .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType)
             .FirstOrDefaultAsync(x => x.Id == id);
         return hotel;
+    }
+
+    public async Task<List<HotelDto>> GetAllHotelsWithOffer()
+    {
+        var query = _unitOfWork.Repository<Hotel>().GetQueryable();
+
+        query = query.Include(p => p.Photos)
+            .Include(l => l.Location)
+            .Include(o => o.Offer)
+            .Include(c => c.HotelRoomTypes).ThenInclude(t => t.RoomType);
+        query = query.Where(c => c.Offer != null);
+        var hotel = await query.ToListAsync();
+        return _mapper.Map<List<HotelDto>>(hotel);
     }
 
     public async Task<List<Hotel>> GetAllHotels(HotelFilterParameters? filterParams = null)
