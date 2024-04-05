@@ -33,9 +33,9 @@ public static class ApplicationServiceExtensions
         services.AddAutoMapper(typeof(RoomTypeProfile),typeof(TouristPlacesProfile),typeof(OffersProfile),typeof(HotelsProfile),typeof(Profiles));
         
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        //  services.AddDbContext<DataContext>(opt => { opt.UseSqlServer(config.GetConnectionString("DefaultConnection")); });
+          services.AddDbContext<DataContext>(opt => { opt.UseSqlServer(config.GetConnectionString("DefaultConnection")); });
 
-        services.AddDbContext<DataContext>(opt => { opt.UseSqlite(config.GetConnectionString("SqliteConnection")); });
+       // services.AddDbContext<DataContext>(opt => { opt.UseSqlite(config.GetConnectionString("SqliteConnection")); });
 
         services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>

@@ -172,6 +172,14 @@ public static class Seed
     private static async Task SeedHotels(DataContext context)
     {
         if (await context.Hotels.AnyAsync()) return;
+        List<(double Latitude, double Longitude)> placesNearDubai = new List<(double Latitude, double Longitude)>
+        {
+            (25.1972, 55.2744), 
+            (25.0673, 55.1401),
+            (25.1122, 55.1385),
+            (25.0754, 55.1295),
+            (25.1186, 55.2004)  
+        };
         var roomTypes = await context.RoomTypes.ToListAsync();
         int sz = roomTypes.Count;
         var count = 5;
@@ -206,8 +214,8 @@ public static class Seed
                 {
                     City = $"City {i}",
                     StreetName = $"Street Name {i}",
-                    Longitude = 1.0 * i,
-                    Latitude = 1.0 * i
+                    Longitude = placesNearDubai[i-1].Longitude,
+                    Latitude = placesNearDubai[i-1].Latitude
                 },
                 OfferId = null,
                 Photos = Enumerable.Range(1, 2).Select(j => new Photo

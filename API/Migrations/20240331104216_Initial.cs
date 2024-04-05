@@ -15,11 +15,11 @@ namespace ProjectP.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,29 +30,29 @@ namespace ProjectP.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    PictureUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Gender = table.Column<string>(type: "TEXT", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
-                    CountryPrifix = table.Column<string>(type: "TEXT", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountryPrifix = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,11 +63,11 @@ namespace ProjectP.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArabicName = table.Column<string>(type: "TEXT", nullable: false),
-                    EnglishName = table.Column<string>(type: "TEXT", nullable: false),
-                    PictureUrl = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArabicName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EnglishName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,12 +78,12 @@ namespace ProjectP.Migrations
                 name: "Location",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    StreetName = table.Column<string>(type: "TEXT", nullable: false),
-                    Longitude = table.Column<double>(type: "REAL", nullable: false),
-                    Latitude = table.Column<double>(type: "REAL", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false),
+                    Latitude = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,12 +94,12 @@ namespace ProjectP.Migrations
                 name: "Offers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    HotelId = table.Column<int>(type: "INTEGER", nullable: false),
-                    StartAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Discount = table.Column<double>(type: "REAL", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HotelId = table.Column<int>(type: "int", nullable: false),
+                    StartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Discount = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,10 +110,10 @@ namespace ProjectP.Migrations
                 name: "RoomTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArabicName = table.Column<string>(type: "TEXT", nullable: false),
-                    EnglishName = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArabicName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EnglishName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,10 +124,10 @@ namespace ProjectP.Migrations
                 name: "Sliders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,16 +138,16 @@ namespace ProjectP.Migrations
                 name: "TouristPlaces",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArabicName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    EnglishName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ArabicDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    EnglishDescription = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    Longitude = table.Column<double>(type: "REAL", nullable: false),
-                    Latitude = table.Column<double>(type: "REAL", nullable: false),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    CityEN = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArabicName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EnglishName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ArabicDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    EnglishDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Longitude = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false),
+                    Latitude = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CityEN = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,11 +158,11 @@ namespace ProjectP.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -179,11 +179,11 @@ namespace ProjectP.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,10 +200,10 @@ namespace ProjectP.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,8 +220,8 @@ namespace ProjectP.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoleId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,10 +244,10 @@ namespace ProjectP.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,19 +264,19 @@ namespace ProjectP.Migrations
                 name: "Hotels",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArabicName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    EnglishName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Stars = table.Column<int>(type: "INTEGER", nullable: false),
-                    Reviews = table.Column<int>(type: "INTEGER", nullable: false),
-                    ArabicDescription = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
-                    EnglishDescription = table.Column<string>(type: "TEXT", maxLength: 400, nullable: false),
-                    MinPrice = table.Column<double>(type: "REAL", nullable: false),
-                    MaxPrice = table.Column<double>(type: "REAL", nullable: false),
-                    LocationId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OfferId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArabicName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EnglishName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Stars = table.Column<int>(type: "int", nullable: false),
+                    Reviews = table.Column<int>(type: "int", nullable: false),
+                    ArabicDescription = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    EnglishDescription = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    MinPrice = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false),
+                    MaxPrice = table.Column<double>(type: "float(38)", precision: 38, scale: 3, nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    OfferId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -299,8 +299,8 @@ namespace ProjectP.Migrations
                 name: "Favorites",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    HotelId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -323,10 +323,10 @@ namespace ProjectP.Migrations
                 name: "HotelRoomType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    HotelId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoomTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HotelId = table.Column<int>(type: "int", nullable: false),
+                    RoomTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -349,11 +349,11 @@ namespace ProjectP.Migrations
                 name: "Photos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    HotelId = table.Column<int>(type: "INTEGER", nullable: true),
-                    TouristPlaceId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: true),
+                    TouristPlaceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -379,7 +379,8 @@ namespace ProjectP.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -405,7 +406,8 @@ namespace ProjectP.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Favorites_HotelId",
@@ -432,7 +434,8 @@ namespace ProjectP.Migrations
                 name: "IX_Hotels_OfferId",
                 table: "Hotels",
                 column: "OfferId",
-                unique: true);
+                unique: true,
+                filter: "[OfferId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_HotelId",
